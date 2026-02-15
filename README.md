@@ -2,6 +2,11 @@
 
 Production-oriented Fight Caves implementation for Hytale using a data-driven 63-wave encounter.
 
+## Repository History
+
+This repository was extracted from `Shieldudaram/Colonists` with preserved history using
+`git subtree split --prefix=fight-caves`.
+
 ## Key Features
 
 - Solo-run session orchestration with queue support (single active run)
