@@ -3,3 +3,9 @@ build/
 run/
 *.iml
 out/
+.idea/
+.vscode/
+.env
+.rr_assist/
+.rr_assist_global/
+.DS_Store
