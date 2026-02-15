@@ -46,6 +46,33 @@ Verification command:
 
 This check is also available in GitHub Actions via workflow **Repo Contract**.
 
+## Dev/Main Sync Policy
+
+- Sync definition: `dev` and `main` are considered in sync when they are **content-equivalent**, not necessarily the same tip SHA.
+- Main-only merge commits from `dev` are expected and allowed.
+- Always compare `origin/dev` and `origin/main` (not stale local refs).
+
+Standard sync check bundle:
+
+- `git fetch origin --prune`
+- `git rev-parse origin/dev origin/main`
+- `git rev-list --left-right --count origin/dev...origin/main`
+- `git diff --name-status origin/dev..origin/main`
+- `git rev-list --right-only --no-merges --oneline origin/dev...origin/main`
+- `git rev-list --right-only --merges --oneline origin/dev...origin/main`
+
+Decision guide:
+
+- Diff empty + no main-only non-merge commits: healthy, no action.
+- Left side > 0 (dev has unreleased commits): open/merge PR `dev -> main`.
+- Main has non-merge commits not in dev: open back-merge PR `main -> dev`.
+- Both sides unique commits and non-empty diff: merge `main -> dev` first, then promote `dev -> main`.
+
+Helper script:
+
+- `./scripts/check-dev-main-sync.sh`
+- `./scripts/check-dev-main-sync.sh --no-fetch` (use existing local refs only)
+
 ## Key Features
 
 - Solo-run session orchestration with queue support (single active run)
