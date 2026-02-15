@@ -1,0 +1,51 @@
+name: Repo Boundaries
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+  push:
+    branches:
+      - main
+      - dev
+
+permissions:
+  contents: read
+
+jobs:
+  main-release-path:
+    name: main-release-path
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ensure only dev can target main
+        run: |
+          set -euo pipefail
+          if [ "${{ github.head_ref }}" != "dev" ]; then
+            echo "ERROR: Pull requests to main must come from dev."
+            echo "Current source branch: ${{ github.head_ref }}"
+            exit 1
+          fi
+          echo "OK: main is being updated from dev."
+
+  scripts-boundary:
+    name: scripts-boundary
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Ensure shared scripts are not tracked here
+        run: |
+          set -euo pipefail
+          pattern='(^|/)(build-all-mods\.sh|build-all-mods 2\.sh|verify-hytale-mod-install\.sh|verify-hytale-mod-install 2\.sh|verify-module-boundaries\.sh)$'
+          matches="$(git ls-files | grep -E "$pattern" || true)"
+
+          if [ -n "$matches" ]; then
+            echo "ERROR: shared scripts must live only in Shieldudaram/scripts."
+            echo "$matches"
+            exit 1
+          fi
+
+          echo "OK: no shared script ownership violations found."
