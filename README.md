@@ -7,6 +7,27 @@ Production-oriented Fight Caves implementation for Hytale using a data-driven 63
 This repository was extracted from `Shieldudaram/Colonists` with preserved history using
 `git subtree split --prefix=fight-caves`.
 
+## Branching and Release Flow
+
+- Default branch: `dev`
+- Integration flow: push/PR into `dev`
+- Release flow: PR from `dev` into `main`
+- Release gate: PRs targeting `main` must come from `dev`
+- Required checks:
+  - `ciCheck`
+  - `scripts-boundary`
+  - `main-release-path` (for PRs targeting `main`)
+
+Canonical contributor sequence:
+
+1. Sync `dev`:
+   - `git switch dev`
+   - `git pull origin dev`
+2. Create your feature branch from `dev`:
+   - `git switch -c feature/<short-topic>`
+3. Merge via PR into `dev`.
+4. Promote release with PR `dev -> main`.
+
 ## Key Features
 
 - Solo-run session orchestration with queue support (single active run)
