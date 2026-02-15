@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "completion": {
+    "rewardId": "fight_caves_token",
+    "amount": 25
+  },
+  "uniqueDrops": [
+    {
+      "rewardId": "inferno_cape_proto",
+      "amount": 1,
+      "chance": 0.02
+    }
+  ],
+  "partialFailure": [
+    {
+      "minWave": 10,
+      "rewardId": "fight_caves_token",
+      "amount": 2
+    },
+    {
+      "minWave": 20,
+      "rewardId": "fight_caves_token",
+      "amount": 5
+    },
+    {
+      "minWave": 30,
+      "rewardId": "fight_caves_token",
+      "amount": 8
+    },
+    {
+      "minWave": 40,
+      "rewardId": "fight_caves_token",
+      "amount": 12
+    },
+    {
+      "minWave": 50,
+      "rewardId": "fight_caves_token",
+      "amount": 16
+    },
+    {
+      "minWave": 60,
+      "rewardId": "fight_caves_token",
+      "amount": 20
+    }
+  ]
+}

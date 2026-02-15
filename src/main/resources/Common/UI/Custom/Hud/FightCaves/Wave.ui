@@ -1,0 +1,21 @@
+Group #FightCavesWaveHud {
+  Anchor: (Top: 20, Left: 20, Width: 240, Height: 74);
+  LayoutMode: Top;
+
+  Group #WavePanel {
+    Background: #000000(0.2);
+    Anchor: (Width: 240, Height: 74);
+    Padding: (Horizontal: 16, Vertical: 10);
+    LayoutMode: Top;
+
+    Label #WaveTitle {
+      Style: (FontSize: 14, Alignment: Center);
+      Text: "Fight Caves";
+    }
+
+    Label #WaveLabel {
+      Style: (FontSize: 18, Alignment: Center);
+      Text: "Wave 1 / 63";
+    }
+  }
+}

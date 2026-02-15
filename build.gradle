@@ -1,0 +1,288 @@
+plugins {
+    id 'java'
+}
+
+import org.gradle.api.file.DuplicatesStrategy
+import org.gradle.internal.os.OperatingSystem
+import java.util.jar.JarFile
+
+group = project.findProperty('group')
+version = project.findProperty('version')
+
+def patchline = (project.findProperty('patchline') ?: 'release').toString()
+def entryPoint = 'com.shieldudaram.fightcaves.plugin.FightCavesPlugin'
+def requiredWaveHudEntry = 'Common/UI/Custom/Hud/FightCaves/Wave.ui'
+
+def resolveHytaleHomePath = {
+    def explicitHome = project.findProperty('hytale_home')
+    if (explicitHome == null || String.valueOf(explicitHome).trim().isEmpty()) {
+        explicitHome = project.findProperty('hytaleHome')
+    }
+    if (explicitHome != null && !String.valueOf(explicitHome).trim().isEmpty()) {
+        return String.valueOf(explicitHome).trim()
+    }
+
+    def userHome = System.getProperty('user.home')
+    def os = OperatingSystem.current()
+    if (os.isWindows()) {
+        return "${userHome}/AppData/Roaming/Hytale"
+    }
+    if (os.isMacOsX()) {
+        return "${userHome}/Library/Application Support/Hytale"
+    }
+    if (os.isLinux()) {
+        def flatpakHome = "${userHome}/.var/app/com.hypixel.HytaleLauncher/data/Hytale"
+        if (file(flatpakHome).exists()) {
+            return flatpakHome
+        }
+        return "${userHome}/.local/share/Hytale"
+    }
+    return null
+}
+
+def hytaleHomePath = resolveHytaleHomePath()
+def hytaleHomeDir = (hytaleHomePath == null) ? null : file(hytaleHomePath)
+def hytaleModsDir = (hytaleHomeDir == null) ? null : file("${hytaleHomePath}/UserData/Mods")
+def hytaleServerJar = (hytaleHomePath == null) ? null : file("${hytaleHomePath}/install/${patchline}/package/game/latest/Server/HytaleServer.jar")
+def canBuildHytaleJar = (hytaleServerJar != null && hytaleServerJar.exists())
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(project.findProperty('java_version').toString().toInteger())
+    withSourcesJar()
+}
+
+sourceSets {
+    hytale {
+        java.srcDir('src/hytale/java')
+        compileClasspath += sourceSets.main.output + configurations.hytaleCompileClasspath
+        runtimeClasspath += output + compileClasspath
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.google.code.gson:gson:2.11.0'
+
+    hytaleCompileOnly fileTree(dir: 'libs', include: ['*.jar'])
+    if (hytaleServerJar != null) {
+        hytaleCompileOnly files(hytaleServerJar)
+    }
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.11.4'
+}
+
+tasks.named('jar') {
+    archiveClassifier.set('core')
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+}
+
+tasks.named('processResources') {
+    def manifestProps = [
+            version    : project.version.toString(),
+            entry_point: entryPoint
+    ]
+    filesMatching('manifest.json') {
+        expand(manifestProps)
+    }
+    inputs.properties(manifestProps)
+}
+
+def readManifestFromJar = { File jarFile ->
+    JarFile jar = new JarFile(jarFile)
+    try {
+        def entry = jar.getJarEntry('manifest.json')
+        if (entry == null) {
+            throw new GradleException("[FightCaves] manifest.json missing in ${jarFile.name}")
+        }
+        def manifestText = jar.getInputStream(entry).getText('UTF-8')
+        return new groovy.json.JsonSlurper().parseText(manifestText)
+    } finally {
+        jar.close()
+    }
+}
+
+def readMainClassFromJar = { File jarFile ->
+    def parsed = readManifestFromJar(jarFile)
+    def mainClass = String.valueOf(parsed?.Main ?: '').trim()
+    if (mainClass.isEmpty()) {
+        throw new GradleException("[FightCaves] Main class is missing in manifest.json for ${jarFile.name}")
+    }
+    return mainClass
+}
+
+def manifestIncludesAssetPack = { File jarFile ->
+    def parsed = readManifestFromJar(jarFile)
+    def value = parsed?.IncludesAssetPack
+    if (!(value instanceof Boolean)) {
+        throw new GradleException("[FightCaves] IncludesAssetPack must be a boolean in manifest.json for ${jarFile.name}")
+    }
+    return value.booleanValue()
+}
+
+def jarContainsClass = { File jarFile, String fqcn ->
+    JarFile jar = new JarFile(jarFile)
+    try {
+        def classPath = fqcn.replace('.', '/') + '.class'
+        return jar.getJarEntry(classPath) != null
+    } finally {
+        jar.close()
+    }
+}
+
+def jarContainsEntry = { File jarFile, String entryPath ->
+    JarFile jar = new JarFile(jarFile)
+    try {
+        return jar.getJarEntry(entryPath) != null
+    } finally {
+        jar.close()
+    }
+}
+
+tasks.register('verifyHytaleServerJar') {
+    doLast {
+        if (hytaleServerJar == null || !hytaleServerJar.exists()) {
+            throw new GradleException(
+                    "[FightCaves] Could not find HytaleServer.jar. " +
+                            "Set -Phytale_home=... (or -PhytaleHome=...) to your Hytale install directory."
+            )
+        }
+    }
+}
+
+tasks.named('compileHytaleJava') {
+    dependsOn tasks.named('verifyHytaleServerJar')
+}
+
+tasks.register('hytaleJar', Jar) {
+    group = 'build'
+    description = 'Builds the plugin-ready Fight Caves jar (core + Hytale adapter + runtime deps).'
+    archiveClassifier.set('hytale')
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    dependsOn tasks.named('classes')
+    dependsOn tasks.named('hytaleClasses')
+
+    from(sourceSets.main.output)
+    from(sourceSets.hytale.output)
+    from({
+        configurations.runtimeClasspath.collect { dependency ->
+            dependency.isDirectory() ? dependency : zipTree(dependency)
+        }
+    }) {
+        exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+    }
+}
+
+tasks.register('verifyHytaleJarMainClass') {
+    dependsOn tasks.named('hytaleJar')
+    doLast {
+        File hytaleJarFile = tasks.named('hytaleJar').get().archiveFile.get().asFile
+        if (!hytaleJarFile.exists()) {
+            throw new GradleException("[FightCaves] Expected hytale jar at ${hytaleJarFile} but it does not exist.")
+        }
+        String mainClass = readMainClassFromJar(hytaleJarFile)
+        if (!jarContainsClass(hytaleJarFile, mainClass)) {
+            throw new GradleException("[FightCaves] hytale jar is missing plugin main class ${mainClass}.")
+        }
+    }
+}
+
+tasks.register('verifyHytaleJarUiAssets') {
+    dependsOn tasks.named('hytaleJar')
+    doLast {
+        File hytaleJarFile = tasks.named('hytaleJar').get().archiveFile.get().asFile
+        if (!hytaleJarFile.exists()) {
+            throw new GradleException("[FightCaves] Expected hytale jar at ${hytaleJarFile} but it does not exist.")
+        }
+        if (!manifestIncludesAssetPack(hytaleJarFile)) {
+            throw new GradleException("[FightCaves] hytale jar manifest IncludesAssetPack must be true.")
+        }
+        if (!jarContainsEntry(hytaleJarFile, requiredWaveHudEntry)) {
+            throw new GradleException("[FightCaves] hytale jar is missing required HUD asset ${requiredWaveHudEntry}.")
+        }
+    }
+}
+
+tasks.register('installToHytaleMods', Copy) {
+    if (canBuildHytaleJar) {
+        dependsOn tasks.named('verifyHytaleJarMainClass')
+        dependsOn tasks.named('verifyHytaleJarUiAssets')
+        from(tasks.named('hytaleJar').flatMap { it.archiveFile })
+    }
+    into(layout.buildDirectory.dir('tmp/installToHytaleMods-noop'))
+
+    onlyIf {
+        if (hytaleHomeDir == null) {
+            logger.lifecycle("[FightCaves] installToHytaleMods skipped: could not resolve Hytale home. Set -Phytale_home=... or -PhytaleHome=...")
+            return false
+        }
+        if (!hytaleHomeDir.exists()) {
+            logger.lifecycle("[FightCaves] installToHytaleMods skipped: Hytale home does not exist at ${hytaleHomeDir}")
+            return false
+        }
+        if (!canBuildHytaleJar) {
+            logger.lifecycle("[FightCaves] installToHytaleMods skipped: HytaleServer.jar not found at ${hytaleServerJar}")
+            return false
+        }
+        return true
+    }
+
+    doFirst {
+        if (!hytaleModsDir.exists()) {
+            hytaleModsDir.mkdirs()
+        }
+        def legacyArtifacts = fileTree(hytaleModsDir) {
+            include "${project.name}-*.jar"
+        }.files.findAll { !it.name.endsWith('-hytale.jar') }
+        legacyArtifacts.each { legacy ->
+            if (legacy.delete()) {
+                logger.lifecycle("[FightCaves] Removed legacy non-hytale artifact: ${legacy.name}")
+            }
+        }
+        into(hytaleModsDir)
+        logger.lifecycle("[FightCaves] installToHytaleMods -> ${hytaleModsDir}")
+    }
+}
+
+tasks.register('verifyInstalledModJar') {
+    dependsOn tasks.named('installToHytaleMods')
+
+    onlyIf {
+        hytaleHomeDir != null && hytaleHomeDir.exists() && canBuildHytaleJar
+    }
+
+    doLast {
+        File installedJar = new File(hytaleModsDir, tasks.named('hytaleJar').get().archiveFile.get().asFile.name)
+        if (!installedJar.exists()) {
+            throw new GradleException("[FightCaves] Installed hytale jar not found at ${installedJar}")
+        }
+
+        String mainClass = readMainClassFromJar(installedJar)
+        if (!jarContainsClass(installedJar, mainClass)) {
+            throw new GradleException("[FightCaves] Installed mod jar missing plugin main class ${mainClass}")
+        }
+        if (!manifestIncludesAssetPack(installedJar)) {
+            throw new GradleException("[FightCaves] Installed mod jar manifest IncludesAssetPack must be true.")
+        }
+        if (!jarContainsEntry(installedJar, requiredWaveHudEntry)) {
+            throw new GradleException("[FightCaves] Installed mod jar missing required HUD asset ${requiredWaveHudEntry}.")
+        }
+
+        def nonHytaleArtifacts = fileTree(hytaleModsDir) {
+            include "${project.name}-*.jar"
+        }.files.findAll { !it.name.endsWith('-hytale.jar') }
+        if (!nonHytaleArtifacts.isEmpty()) {
+            throw new GradleException("[FightCaves] Found legacy non-hytale artifacts in mods dir: " + nonHytaleArtifacts*.name.join(', '))
+        }
+    }
+}
+
+tasks.named('build') {
+    finalizedBy 'verifyInstalledModJar'
+}

@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "enemies": [
+    {
+      "id": "emberling",
+      "displayName": "Emberling",
+      "attackStyle": "melee",
+      "maxHealth": 60,
+      "baseDamage": 8.0,
+      "difficultyWeight": 1.0
+    },
+    {
+      "id": "ashed_stalker",
+      "displayName": "Ashed Stalker",
+      "attackStyle": "ranged",
+      "maxHealth": 90,
+      "baseDamage": 12.0,
+      "difficultyWeight": 1.6
+    },
+    {
+      "id": "magma_hulk",
+      "displayName": "Magma Hulk",
+      "attackStyle": "melee",
+      "maxHealth": 180,
+      "baseDamage": 18.0,
+      "difficultyWeight": 2.5
+    },
+    {
+      "id": "pyroseer",
+      "displayName": "Pyroseer",
+      "attackStyle": "magic",
+      "maxHealth": 140,
+      "baseDamage": 20.0,
+      "difficultyWeight": 2.7
+    },
+    {
+      "id": "obsidian_reaver",
+      "displayName": "Obsidian Reaver",
+      "attackStyle": "melee",
+      "maxHealth": 240,
+      "baseDamage": 24.0,
+      "difficultyWeight": 3.4
+    },
+    {
+      "id": "cinder_archer",
+      "displayName": "Cinder Archer",
+      "attackStyle": "ranged",
+      "maxHealth": 150,
+      "baseDamage": 19.0,
+      "difficultyWeight": 2.8
+    },
+    {
+      "id": "ember_healer",
+      "displayName": "Ember Healer",
+      "attackStyle": "magic",
+      "maxHealth": 110,
+      "baseDamage": 10.0,
+      "difficultyWeight": 1.8
+    },
+    {
+      "id": "molten_colossus",
+      "displayName": "Molten Colossus",
+      "attackStyle": "magic",
+      "maxHealth": 1200,
+      "baseDamage": 48.0,
+      "difficultyWeight": 8.0
+    }
+  ]
+}

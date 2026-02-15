@@ -1,0 +1,20 @@
+{
+  "Group": "Shieldudaram",
+  "Name": "FightCaves",
+  "Version": "${version}",
+  "Description": "Solo endurance cave encounter with 63 waves, stance-switching, and a final boss.",
+  "Authors": [
+    {
+      "Name": "Shieldudaram"
+    }
+  ],
+  "Website": "",
+  "ServerVersion": "*",
+  "Dependencies": {},
+  "OptionalDependencies": {
+    "Buuz135:MultipleHUD": "*"
+  },
+  "DisabledByDefault": false,
+  "Main": "${entry_point}",
+  "IncludesAssetPack": true
+}

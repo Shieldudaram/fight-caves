@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "id": "molten_colossus",
+  "displayName": "Molten Colossus",
+  "finalWave": 63,
+  "attackCycle": ["ranged", "magic", "melee"],
+  "healerCount": 4,
+  "healersAttackPlayer": true
+}

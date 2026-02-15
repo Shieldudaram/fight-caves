@@ -1,0 +1,321 @@
+{
+  "version": 1,
+  "totalWaves": 63,
+  "waves": [
+    {
+      "wave": 1,
+      "bossWave": false,
+      "spawns": [{"enemyId":"emberling","count":2}]
+    },
+    {
+      "wave": 2,
+      "bossWave": false,
+      "spawns": [{"enemyId":"emberling","count":3}]
+    },
+    {
+      "wave": 3,
+      "bossWave": false,
+      "spawns": [{"enemyId":"emberling","count":3}]
+    },
+    {
+      "wave": 4,
+      "bossWave": false,
+      "spawns": [{"enemyId":"emberling","count":3}]
+    },
+    {
+      "wave": 5,
+      "bossWave": false,
+      "spawns": [{"enemyId":"emberling","count":4}]
+    },
+    {
+      "wave": 6,
+      "bossWave": false,
+      "spawns": [{"enemyId":"emberling","count":4}]
+    },
+    {
+      "wave": 7,
+      "bossWave": false,
+      "spawns": [{"enemyId":"emberling","count":4}]
+    },
+    {
+      "wave": 8,
+      "bossWave": false,
+      "spawns": [{"enemyId":"emberling","count":5}]
+    },
+    {
+      "wave": 9,
+      "bossWave": false,
+      "spawns": [{"enemyId":"emberling","count":5}]
+    },
+    {
+      "wave": 10,
+      "bossWave": false,
+      "spawns": [{"enemyId":"emberling","count":5}]
+    },
+    {
+      "wave": 11,
+      "bossWave": false,
+      "spawns": [{"enemyId":"emberling","count":6}]
+    },
+    {
+      "wave": 12,
+      "bossWave": false,
+      "spawns": [{"enemyId":"emberling","count":6}]
+    },
+    {
+      "wave": 13,
+      "bossWave": false,
+      "spawns": [{"enemyId":"emberling","count":4}, {"enemyId":"ashed_stalker","count":1}]
+    },
+    {
+      "wave": 14,
+      "bossWave": false,
+      "spawns": [{"enemyId":"emberling","count":4}, {"enemyId":"ashed_stalker","count":1}]
+    },
+    {
+      "wave": 15,
+      "bossWave": false,
+      "spawns": [{"enemyId":"emberling","count":4}, {"enemyId":"ashed_stalker","count":1}]
+    },
+    {
+      "wave": 16,
+      "bossWave": false,
+      "spawns": [{"enemyId":"emberling","count":4}, {"enemyId":"ashed_stalker","count":1}]
+    },
+    {
+      "wave": 17,
+      "bossWave": false,
+      "spawns": [{"enemyId":"emberling","count":4}, {"enemyId":"ashed_stalker","count":1}]
+    },
+    {
+      "wave": 18,
+      "bossWave": false,
+      "spawns": [{"enemyId":"emberling","count":5}, {"enemyId":"ashed_stalker","count":2}]
+    },
+    {
+      "wave": 19,
+      "bossWave": false,
+      "spawns": [{"enemyId":"emberling","count":5}, {"enemyId":"ashed_stalker","count":2}]
+    },
+    {
+      "wave": 20,
+      "bossWave": false,
+      "spawns": [{"enemyId":"emberling","count":5}, {"enemyId":"ashed_stalker","count":2}]
+    },
+    {
+      "wave": 21,
+      "bossWave": false,
+      "spawns": [{"enemyId":"emberling","count":5}, {"enemyId":"ashed_stalker","count":2}]
+    },
+    {
+      "wave": 22,
+      "bossWave": false,
+      "spawns": [{"enemyId":"emberling","count":5}, {"enemyId":"ashed_stalker","count":2}]
+    },
+    {
+      "wave": 23,
+      "bossWave": false,
+      "spawns": [{"enemyId":"emberling","count":5}, {"enemyId":"ashed_stalker","count":2}]
+    },
+    {
+      "wave": 24,
+      "bossWave": false,
+      "spawns": [{"enemyId":"emberling","count":6}, {"enemyId":"ashed_stalker","count":3}]
+    },
+    {
+      "wave": 25,
+      "bossWave": false,
+      "spawns": [{"enemyId":"ashed_stalker","count":2}, {"enemyId":"magma_hulk","count":1}]
+    },
+    {
+      "wave": 26,
+      "bossWave": false,
+      "spawns": [{"enemyId":"ashed_stalker","count":2}, {"enemyId":"magma_hulk","count":1}]
+    },
+    {
+      "wave": 27,
+      "bossWave": false,
+      "spawns": [{"enemyId":"ashed_stalker","count":2}, {"enemyId":"magma_hulk","count":1}]
+    },
+    {
+      "wave": 28,
+      "bossWave": false,
+      "spawns": [{"enemyId":"ashed_stalker","count":2}, {"enemyId":"magma_hulk","count":1}]
+    },
+    {
+      "wave": 29,
+      "bossWave": false,
+      "spawns": [{"enemyId":"ashed_stalker","count":2}, {"enemyId":"magma_hulk","count":1}]
+    },
+    {
+      "wave": 30,
+      "bossWave": false,
+      "spawns": [{"enemyId":"ashed_stalker","count":3}, {"enemyId":"magma_hulk","count":1}]
+    },
+    {
+      "wave": 31,
+      "bossWave": false,
+      "spawns": [{"enemyId":"ashed_stalker","count":3}, {"enemyId":"magma_hulk","count":1}]
+    },
+    {
+      "wave": 32,
+      "bossWave": false,
+      "spawns": [{"enemyId":"ashed_stalker","count":3}, {"enemyId":"magma_hulk","count":2}]
+    },
+    {
+      "wave": 33,
+      "bossWave": false,
+      "spawns": [{"enemyId":"ashed_stalker","count":3}, {"enemyId":"magma_hulk","count":2}]
+    },
+    {
+      "wave": 34,
+      "bossWave": false,
+      "spawns": [{"enemyId":"ashed_stalker","count":3}, {"enemyId":"magma_hulk","count":2}]
+    },
+    {
+      "wave": 35,
+      "bossWave": false,
+      "spawns": [{"enemyId":"ashed_stalker","count":3}, {"enemyId":"magma_hulk","count":2}]
+    },
+    {
+      "wave": 36,
+      "bossWave": false,
+      "spawns": [{"enemyId":"ashed_stalker","count":4}, {"enemyId":"magma_hulk","count":2}]
+    },
+    {
+      "wave": 37,
+      "bossWave": false,
+      "spawns": [{"enemyId":"magma_hulk","count":2}, {"enemyId":"pyroseer","count":1}, {"enemyId":"cinder_archer","count":1}]
+    },
+    {
+      "wave": 38,
+      "bossWave": false,
+      "spawns": [{"enemyId":"magma_hulk","count":2}, {"enemyId":"pyroseer","count":1}, {"enemyId":"cinder_archer","count":1}]
+    },
+    {
+      "wave": 39,
+      "bossWave": false,
+      "spawns": [{"enemyId":"magma_hulk","count":2}, {"enemyId":"pyroseer","count":1}, {"enemyId":"cinder_archer","count":1}]
+    },
+    {
+      "wave": 40,
+      "bossWave": false,
+      "spawns": [{"enemyId":"magma_hulk","count":2}, {"enemyId":"pyroseer","count":1}, {"enemyId":"cinder_archer","count":1}]
+    },
+    {
+      "wave": 41,
+      "bossWave": false,
+      "spawns": [{"enemyId":"magma_hulk","count":2}, {"enemyId":"pyroseer","count":1}, {"enemyId":"cinder_archer","count":1}]
+    },
+    {
+      "wave": 42,
+      "bossWave": false,
+      "spawns": [{"enemyId":"magma_hulk","count":2}, {"enemyId":"pyroseer","count":2}, {"enemyId":"cinder_archer","count":1}]
+    },
+    {
+      "wave": 43,
+      "bossWave": false,
+      "spawns": [{"enemyId":"magma_hulk","count":2}, {"enemyId":"pyroseer","count":2}, {"enemyId":"cinder_archer","count":2}]
+    },
+    {
+      "wave": 44,
+      "bossWave": false,
+      "spawns": [{"enemyId":"magma_hulk","count":3}, {"enemyId":"pyroseer","count":2}, {"enemyId":"cinder_archer","count":2}]
+    },
+    {
+      "wave": 45,
+      "bossWave": false,
+      "spawns": [{"enemyId":"magma_hulk","count":3}, {"enemyId":"pyroseer","count":2}, {"enemyId":"cinder_archer","count":2}]
+    },
+    {
+      "wave": 46,
+      "bossWave": false,
+      "spawns": [{"enemyId":"magma_hulk","count":3}, {"enemyId":"pyroseer","count":2}, {"enemyId":"cinder_archer","count":2}]
+    },
+    {
+      "wave": 47,
+      "bossWave": false,
+      "spawns": [{"enemyId":"magma_hulk","count":3}, {"enemyId":"pyroseer","count":2}, {"enemyId":"cinder_archer","count":2}]
+    },
+    {
+      "wave": 48,
+      "bossWave": false,
+      "spawns": [{"enemyId":"magma_hulk","count":3}, {"enemyId":"pyroseer","count":3}, {"enemyId":"cinder_archer","count":2}]
+    },
+    {
+      "wave": 49,
+      "bossWave": false,
+      "spawns": [{"enemyId":"obsidian_reaver","count":1}, {"enemyId":"pyroseer","count":2}, {"enemyId":"cinder_archer","count":2}]
+    },
+    {
+      "wave": 50,
+      "bossWave": false,
+      "spawns": [{"enemyId":"obsidian_reaver","count":1}, {"enemyId":"pyroseer","count":2}, {"enemyId":"cinder_archer","count":2}]
+    },
+    {
+      "wave": 51,
+      "bossWave": false,
+      "spawns": [{"enemyId":"obsidian_reaver","count":1}, {"enemyId":"pyroseer","count":2}, {"enemyId":"cinder_archer","count":2}]
+    },
+    {
+      "wave": 52,
+      "bossWave": false,
+      "spawns": [{"enemyId":"obsidian_reaver","count":1}, {"enemyId":"pyroseer","count":2}, {"enemyId":"cinder_archer","count":2}]
+    },
+    {
+      "wave": 53,
+      "bossWave": false,
+      "spawns": [{"enemyId":"obsidian_reaver","count":1}, {"enemyId":"pyroseer","count":2}, {"enemyId":"cinder_archer","count":2}]
+    },
+    {
+      "wave": 54,
+      "bossWave": false,
+      "spawns": [{"enemyId":"obsidian_reaver","count":1}, {"enemyId":"pyroseer","count":3}, {"enemyId":"cinder_archer","count":3}]
+    },
+    {
+      "wave": 55,
+      "bossWave": false,
+      "spawns": [{"enemyId":"obsidian_reaver","count":2}, {"enemyId":"pyroseer","count":3}, {"enemyId":"cinder_archer","count":3}]
+    },
+    {
+      "wave": 56,
+      "bossWave": false,
+      "spawns": [{"enemyId":"obsidian_reaver","count":2}, {"enemyId":"pyroseer","count":3}, {"enemyId":"cinder_archer","count":3}]
+    },
+    {
+      "wave": 57,
+      "bossWave": false,
+      "spawns": [{"enemyId":"obsidian_reaver","count":2}, {"enemyId":"pyroseer","count":3}, {"enemyId":"cinder_archer","count":3}]
+    },
+    {
+      "wave": 58,
+      "bossWave": false,
+      "spawns": [{"enemyId":"obsidian_reaver","count":2}, {"enemyId":"pyroseer","count":3}, {"enemyId":"cinder_archer","count":3}]
+    },
+    {
+      "wave": 59,
+      "bossWave": false,
+      "spawns": [{"enemyId":"obsidian_reaver","count":2}, {"enemyId":"pyroseer","count":3}, {"enemyId":"cinder_archer","count":3}]
+    },
+    {
+      "wave": 60,
+      "bossWave": false,
+      "spawns": [{"enemyId":"obsidian_reaver","count":2}, {"enemyId":"pyroseer","count":4}, {"enemyId":"cinder_archer","count":4}]
+    },
+    {
+      "wave": 61,
+      "bossWave": false,
+      "spawns": [{"enemyId":"obsidian_reaver","count":2}, {"enemyId":"pyroseer","count":4}, {"enemyId":"cinder_archer","count":4}]
+    },
+    {
+      "wave": 62,
+      "bossWave": false,
+      "spawns": [{"enemyId":"obsidian_reaver","count":3}, {"enemyId":"pyroseer","count":4}, {"enemyId":"cinder_archer","count":4}]
+    },
+    {
+      "wave": 63,
+      "bossWave": true,
+      "spawns": [{"enemyId":"molten_colossus","count":1}, {"enemyId":"ember_healer","count":4}]
+    }
+  ]
+}

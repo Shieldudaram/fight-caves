@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "entry": {
+    "commandEnabled": true,
+    "npcEnabled": true
+  },
+  "arena": {
+    "world": "world",
+    "boundsMin": [0, 64, 0],
+    "boundsMax": [32, 96, 32],
+    "playerSpawn": [1024, 64, 1024],
+    "spawnPoints": [
+      {"id":"default_1","pos":[1024,64,1024]},
+      {"id":"default_2","pos":[1028,64,1024]},
+      {"id":"default_3","pos":[1024,64,1028]},
+      {"id":"default_4","pos":[1028,64,1028]}
+    ],
+    "returnPlayerOnExit": true,
+    "templateWorld": "world",
+    "templateMin": [0, 64, 0],
+    "templateMax": [32, 96, 32],
+    "activeOrigin": [1024, 64, 1024],
+    "spectatorSpawn": [1032, 68, 1032]
+  },
+  "session": {
+    "maxConcurrentRuns": 1,
+    "disconnectBehavior": "fail_run",
+    "queueEnabled": true,
+    "queueLimit": 64,
+    "startGraceSeconds": 3
+  },
+  "combat": {
+    "attackTypes": ["melee", "ranged", "magic"],
+    "preWavePrepSeconds": 6,
+    "correctStanceDamageMultiplier": 0.55,
+    "wrongStanceDamageMultiplier": 1.0,
+    "targetRunMinutesMin": 35,
+    "targetRunMinutesMax": 50,
+    "firstClearRatePercentMin": 20,
+    "firstClearRatePercentMax": 30,
+    "timingStrictness": "moderately_strict",
+    "waveAdvanceMode": "kills_only"
+  },
+  "rewards": {
+    "partialFailureEnabled": true,
+    "farmControl": "none",
+    "completionTokenId": "fight_caves_token"
+  },
+  "persistence": {
+    "playerStatsFile": "fight_caves_player_stats.json",
+    "runHistoryFile": "fight_caves_run_history.jsonl",
+    "claimsFile": "fight_caves_claims.json",
+    "activeRunMarkerFile": "fight_caves_active_run.json"
+  },
+  "npc": {
+    "enabled": true,
+    "npcTypeId": "realmruler:fight_caves_guide",
+    "fallbackInteractionItemId": "realmruler:fight_caves_totem"
+  },
+  "messages": {
+    "prefix": "[FightCaves]",
+    "locale": "en_us"
+  },
+  "ui": {
+    "waveHudEnabled": true,
+    "waveHudMode": "multiplehud_optional",
+    "chatFallbackOnWaveChange": true
+  },
+  "ops": {
+    "adminPermission": "fightcaves.admin"
+  }
+}
