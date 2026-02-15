@@ -81,6 +81,4 @@ From this folder:
 
 From the workspace root (cross-module sanity check):
 
-Prerequisite: ensure `./scripts/` is checked out from `https://github.com/Shieldudaram/scripts`.
-
 - `./scripts/verify-hytale-mod-install.sh`
