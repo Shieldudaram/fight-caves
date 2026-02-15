@@ -28,6 +28,24 @@ Canonical contributor sequence:
 3. Merge via PR into `dev`.
 4. Promote release with PR `dev -> main`.
 
+## Repo Contract
+
+- Canonical GitHub repo: `Shieldudaram/fight-caves`
+- Required local branch tracking:
+  - `dev -> origin/dev`
+  - `main -> origin/main`
+- Required protection contexts:
+  - `dev`: `ciCheck`, `scripts-boundary`
+  - `main`: `ciCheck`, `scripts-boundary`, `main-release-path`
+- Required release gate:
+  - PRs into `main` must originate from `dev`
+
+Verification command:
+
+- `./scripts/verify-repo-contract.sh`
+
+This check is also available in GitHub Actions via workflow **Repo Contract**.
+
 ## Key Features
 
 - Solo-run session orchestration with queue support (single active run)
