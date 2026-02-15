@@ -29,8 +29,13 @@ public final class FightCavesTeleportService {
         pendingByUuid.put(uuid, new PendingTeleport(worldName, x, y, z, pitch, yaw, roll));
     }
 
-    public PendingTeleport poll(String uuid) {
+    public PendingTeleport peek(String uuid) {
         if (uuid == null || uuid.isBlank()) return null;
-        return pendingByUuid.remove(uuid);
+        return pendingByUuid.get(uuid);
+    }
+
+    public void clear(String uuid) {
+        if (uuid == null || uuid.isBlank()) return;
+        pendingByUuid.remove(uuid);
     }
 }

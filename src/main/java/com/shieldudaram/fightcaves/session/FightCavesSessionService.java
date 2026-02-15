@@ -234,10 +234,6 @@ public final class FightCavesSessionService {
             }
 
             WaveDefinition wave = content.waves().get(nextWave - 1);
-            active.state = RunState.IN_WAVE;
-            active.currentWave = nextWave;
-            active.nextTransitionAtMs = 0L;
-
             FightCavesEncounterAdapter.WaveSpawnResult spawn = encounterAdapter.spawnWave(
                     active.runId,
                     active.playerId,
@@ -254,6 +250,9 @@ public final class FightCavesSessionService {
                 return;
             }
 
+            active.state = RunState.IN_WAVE;
+            active.currentWave = nextWave;
+            active.nextTransitionAtMs = 0L;
             active.enemiesRemaining = Math.max(0, spawn.spawnedCount());
             active.lastUiEnemies = -1;
 
@@ -276,7 +275,11 @@ public final class FightCavesSessionService {
             return;
         }
 
-        int alive = Math.max(0, encounterAdapter.countAlive(active.runId, active.currentWave));
+        int aliveCount = encounterAdapter.countAlive(active.runId, active.currentWave);
+        if (aliveCount < 0) {
+            return;
+        }
+        int alive = Math.max(0, aliveCount);
         active.enemiesRemaining = alive;
 
         if (active.lastUiEnemies != alive) {
@@ -583,11 +586,22 @@ public final class FightCavesSessionService {
         if (active != null) {
             return;
         }
-        PlayerEntry next = queue.pollFirst();
+        PlayerEntry next = queue.peekFirst();
         if (next == null) {
             return;
         }
-        startNow(next.playerId, next.playerName, "queue", now);
+        StartResult result = startNow(next.playerId, next.playerName, "queue", now);
+        if (result.status() == StartStatus.STARTED) {
+            queue.pollFirst();
+            return;
+        }
+        if (result.status() == StartStatus.BUSY) {
+            return;
+        }
+
+        // Drop invalid queue entries to prevent perpetual retry loops.
+        queue.pollFirst();
+        logger.warning("[FightCaves] Removed invalid queue entry for player " + next.playerId + ": " + result.message());
     }
 
     private int queuePosition(String playerId) {

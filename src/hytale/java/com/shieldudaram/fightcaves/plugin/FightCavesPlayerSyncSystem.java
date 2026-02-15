@@ -72,26 +72,28 @@ public final class FightCavesPlayerSyncSystem extends EntityTickingSystem<Entity
             playerStateService.update(uuid, snapshot);
         }
 
-        FightCavesTeleportService.PendingTeleport pending = teleportService.poll(uuid);
+        FightCavesTeleportService.PendingTeleport pending = teleportService.peek(uuid);
         if (pending != null) {
             Ref<EntityStore> ref = chunk.getReferenceTo(entityId);
-            scheduleTeleport(player.getWorld(), store, ref, pending);
+            if (scheduleTeleport(player.getWorld(), store, ref, pending)) {
+                teleportService.clear(uuid);
+            }
         }
 
         hudService.renderForPlayer(uuid, player, playerRef);
     }
 
-    private void scheduleTeleport(World currentWorld,
-                                  Store<EntityStore> store,
-                                  Ref<EntityStore> ref,
-                                  FightCavesTeleportService.PendingTeleport pending) {
+    private boolean scheduleTeleport(World currentWorld,
+                                     Store<EntityStore> store,
+                                     Ref<EntityStore> ref,
+                                     FightCavesTeleportService.PendingTeleport pending) {
         if (currentWorld == null || store == null || ref == null || !ref.isValid() || pending == null) {
-            return;
+            return false;
         }
 
         World targetWorld = Universe.get().getWorld(pending.worldName());
         if (targetWorld == null) {
-            return;
+            return false;
         }
 
         try {
@@ -105,7 +107,9 @@ public final class FightCavesPlayerSyncSystem extends EntityTickingSystem<Entity
                 } catch (Throwable ignored) {
                 }
             });
+            return true;
         } catch (Throwable ignored) {
+            return false;
         }
     }
 }

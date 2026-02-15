@@ -5,6 +5,7 @@ import com.shieldudaram.fightcaves.content.LoadedContent;
 import com.shieldudaram.fightcaves.content.WaveDefinition;
 
 public interface FightCavesEncounterAdapter {
+    int ALIVE_COUNT_UNKNOWN = -1;
 
     record RunStartResult(boolean success, String message) {
         public static RunStartResult ok() {
@@ -37,6 +38,10 @@ public interface FightCavesEncounterAdapter {
                               LoadedContent content,
                               FightCavesConfig config);
 
+    /**
+     * @return number of living tracked entities for the wave, or {@link #ALIVE_COUNT_UNKNOWN}
+     * when liveness cannot be determined yet due to transient runtime uncertainty.
+     */
     int countAlive(String runId, int waveNumber);
 
     void clearWave(String runId, int waveNumber, String reason);

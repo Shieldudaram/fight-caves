@@ -14,6 +14,7 @@ import com.shieldudaram.fightcaves.arena.ArenaProfile;
 import com.shieldudaram.fightcaves.arena.SpawnPoint;
 import com.shieldudaram.fightcaves.content.LoadedContent;
 import com.shieldudaram.fightcaves.content.WaveDefinition;
+import com.shieldudaram.fightcaves.session.FightCavesEncounterAdapter;
 import com.shieldudaram.fightcaves.session.TrackedEnemy;
 
 import java.util.ArrayList;
@@ -103,6 +104,7 @@ public final class FightCavesEnemySpawnService {
         }
 
         int alive = 0;
+        boolean unknown = false;
         List<String> copy;
         synchronized (ids) {
             copy = new ArrayList<>(ids);
@@ -116,13 +118,18 @@ public final class FightCavesEnemySpawnService {
             if (!tracked.alive) {
                 continue;
             }
-            if (!isAlive(tracked)) {
+            LivenessState liveness = probeLiveness(tracked);
+            if (liveness == LivenessState.UNKNOWN) {
+                unknown = true;
+                continue;
+            }
+            if (liveness == LivenessState.DEAD) {
                 tracked.alive = false;
                 continue;
             }
             alive++;
         }
-        return alive;
+        return unknown ? FightCavesEncounterAdapter.ALIVE_COUNT_UNKNOWN : alive;
     }
 
     public void clearWave(String runId, int waveNumber) {
@@ -199,25 +206,28 @@ public final class FightCavesEnemySpawnService {
         });
     }
 
-    private boolean isAlive(TrackedEnemy tracked) {
+    private LivenessState probeLiveness(TrackedEnemy tracked) {
         if (tracked == null || tracked.entityUuid == null || tracked.world == null) {
-            return false;
+            return LivenessState.DEAD;
         }
         UUID parsed = parseUuid(tracked.entityUuid);
         if (parsed == null) {
-            return false;
+            return LivenessState.DEAD;
         }
 
         World world = Universe.get().getWorld(tracked.world);
         if (world == null) {
-            return false;
+            return LivenessState.UNKNOWN;
         }
 
         Boolean alive = runOnWorldThread(world, () -> {
             Entity entity = world.getEntity(parsed);
             return entity != null && !entity.wasRemoved();
         });
-        return Boolean.TRUE.equals(alive);
+        if (alive == null) {
+            return LivenessState.UNKNOWN;
+        }
+        return alive ? LivenessState.ALIVE : LivenessState.DEAD;
     }
 
     private String spawnNpc(World world, int x, int y, int z) {
@@ -275,5 +285,11 @@ public final class FightCavesEnemySpawnService {
             logger.atWarning().withCause(t).log("[FightCaves] World-thread execution failed.");
             return null;
         }
+    }
+
+    private enum LivenessState {
+        ALIVE,
+        DEAD,
+        UNKNOWN
     }
 }
